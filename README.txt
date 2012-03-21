@@ -7,6 +7,15 @@ DESCRIPTION
     A Pythonic wrapper for pidstat: 
     http://manpages.ubuntu.com/manpages/lucid/en/man1/pidstat.1.html
 
+    Usage
+    =====
+      There are at least three possible ways to use this script.
+
+        1. Add as custom plugin for your Cloudkick agent (TK).
+        2. Create crontab to run periodically: */5 * * * * 
+           /usr/local/bin/pydstat.py
+        3. Add as Splunk scripted input (TK).
+
     License
     =======
       Copyright 2011 Splunk, Inc.
@@ -84,7 +93,7 @@ FUNCTIONS
 
 VARIABLES
     
-    __help__ = 'https://ampledata.github.com/pydstat'
+    __help__ = 'https://github.com/ampledata/pydstat'
     
     LOGGER = setup_logging()
     
