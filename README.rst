@@ -4,7 +4,7 @@ Collects and returns process stats in syslog format.
 
 .. _pidstat: http://manpages.ubuntu.com/manpages/lucid/en/man1/pidstat.1.html
 
-.. image:: https://secure.travis-ci.org/ampledata/pydstat.png?branch=feature/package
+.. image:: https://secure.travis-ci.org/ampledata/pydstat.png
         :target: https://secure.travis-ci.org/ampledata/pydstat
 
 Usage
