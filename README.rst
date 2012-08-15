@@ -2,7 +2,10 @@ A Pythonic wrapper for `pidstat`_.
 
 Collects and returns process stats in Cloudkick and syslog formats.
 
-. `pidstat`: http://manpages.ubuntu.com/manpages/lucid/en/man1/pidstat.1.html
+.. _pidstat: http://manpages.ubuntu.com/manpages/lucid/en/man1/pidstat.1.html
+
+.. image:: https://secure.travis-ci.org/ampledata/splunk_app_boundary.png?branch=develop
+        :target: https://secure.travis-ci.org/ampledata/splunk_app_boundary
 
 Usage
 =====
