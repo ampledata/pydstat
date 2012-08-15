@@ -1,0 +1,14 @@
+# Python Distribution Package Requirements for pydstat.
+#
+# Author:: Greg Albrecht <mailto:gba@splunk.com>
+# Copyright:: Copyright 2012 Splunk, Inc.
+# License:: Apache License 2.0
+
+
+flake8
+clonedigger
+coverage
+mock
+nose
+pylint
+pep8
