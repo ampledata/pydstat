@@ -4,8 +4,8 @@ Collects and returns process stats in Cloudkick and syslog formats.
 
 .. _pidstat: http://manpages.ubuntu.com/manpages/lucid/en/man1/pidstat.1.html
 
-.. image:: https://secure.travis-ci.org/ampledata/splunk_app_boundary.png?branch=develop
-        :target: https://secure.travis-ci.org/ampledata/splunk_app_boundary
+.. image:: https://secure.travis-ci.org/ampledata/pydstat.png?branch=feature/package
+        :target: https://secure.travis-ci.org/ampledata/pydstat
 
 Usage
 =====
