@@ -1,6 +1,6 @@
 A Pythonic wrapper for `pidstat`_.
 
-Collects and returns process stats in Cloudkick and syslog formats.
+Collects and returns process stats in syslog format.
 
 .. _pidstat: http://manpages.ubuntu.com/manpages/lucid/en/man1/pidstat.1.html
 
@@ -9,15 +9,17 @@ Collects and returns process stats in Cloudkick and syslog formats.
 
 Usage
 =====
-There are at least three possible ways to use this script.
-
-#. Add as custom plugin for your Cloudkick agent (TK).
 #. Create crontab to run periodically::
 
-    */5 * * * * /usr/local/bin/pydstat.py
+    */5 * * * * /usr/local/bin/pydstat
 
-#. Add as Splunk scripted input (TK).
+#. Use `Splunk`_ to collect logs.
 
+.. _Splunk: http://www.splunk.com/
+
+Source
+======
+https://github.com/ampledata/pydstat
 
 Author
 ======

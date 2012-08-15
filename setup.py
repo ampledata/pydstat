@@ -1,5 +1,8 @@
 #!/usr/bin/env python
-"""pydstat"""
+"""Setup for pydstat.
+
+Source:: https://github.com/ampledata/pydstat
+"""
 
 __author__ = 'Greg Albrecht <gba@splunk.com>'
 __copyright__ = 'Copyright 2012 Splunk, Inc.'
