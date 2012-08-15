@@ -44,21 +44,26 @@ import subprocess
 
 def setup_logging():
     """Sets up logging for pydstat."""
-    base_logger = logging.getLogger('ck')
-    base_logger.setLevel(logging.DEBUG)
     if os.path.exists('/dev/log'):
         log_dest = '/dev/log'  # Log Locally
     else:
         log_dest = ('localhost', 514)
-    slh = logging.handlers.SysLogHandler(log_dest, 'local5')
-    slh.setLevel(logging.DEBUG)
-    slh_formatter = logging.Formatter('pydstat: %(message)s # Help: %(help)s')
-    slh.setFormatter(slh_formatter)
-    base_logger.addHandler(slh)
+
+    base_logger = logging.getLogger('ck')
+    base_logger.setLevel(logging.DEBUG)
+
+    syslog_logger = logging.handlers.SysLogHandler(log_dest, 'local5')
+    syslog_logger_formatter = logging.Formatter(
+        'pydstat: %(message)s # Help: %(help)s')
+    syslog_logger.setFormatter(syslog_logger_formatter)
+
     # Stream (console) for testing 'log' output w/o syslog.
-    #clh = logging.StreamHandler()
-    #base_logger.addHandler(clh)
+    console_logger = logging.StreamHandler()
+
+    #base_logger.addHandler(console_logger)
+    base_logger.addHandler(syslog_logger)
     return logging.LoggerAdapter(base_logger, {'help': __help__})
+
 
 LOGGER = setup_logging()
 
@@ -118,8 +123,28 @@ def get_stats(pid=None):
     return stdoutdata.split('\n')
 
 
+def get_cmdline(pid):
+    """Get cmdline for given PID.
+
+    @param pid: Pid to lookup.
+    @type pid: string
+
+    @return: Contents of /proc/$pid/cmdline.
+    @rtype: str
+    """
+    cmdline = ''
+    cmdline_file = os.path.join(os.path.sep, 'proc', pid, 'cmdline')
+
+    if os.path.exists(cmdline_file):
+        with open(cmdline_file, 'r') as cmdline_fd:
+            cmdline = cmdline_fd.read()
+
+    # cmdline is NULL terminated, lets replace those with spaces.
+    return "'%s'" % cmdline.rstrip('\x00').replace('\x00', ' ')
+
+
 def parse_stats(stats):
-    """Groks the output from pidstat.
+    """Groks the output from pidstat. Also fixes weird field names: %, /s, etc
 
     @param stats: Output of pidstat as a list
     @type stats: list
@@ -130,11 +155,12 @@ def parse_stats(stats):
     values = []
     for stat in stats:
         if stat.startswith('#'):
-            fields = stat.split()[1:]
+            fixed_stat = stat.replace('%', 'pct_').replace('/', '')
+            fields = fixed_stat.split()[1:]
         elif stat.startswith(' '):
             values.append(stat.split())
     # Make list of dicts with values for each PID.
-    # e.g. [{'cmd': 'httpd', '%CPU': '50'}]
+    # e.g. [{'cmd': 'httpd', 'pct_CPU': '50'}]
     return [dict(zip(fields, v)) for v in values]
 
 
@@ -156,15 +182,14 @@ def ck_print_stats(stats):
 
 def log_stats(stats):
     """Logs stats to syslog.
-
-    Replace PyDict/JSON style string with k=v string. Also replace weird field
-    names, e.g. '%CPU', 'kb/s'.
+    Replace PyDict/JSON style string with k=v string.
 
     @param stats: A list of metrics as returned by get_stats()
     @type stats: list
     """
+    stats['cmdline'] = get_cmdline(stats['PID'])
     log = ['%s=%s' % (k, stats[k]) for k in stats]
-    LOGGER.debug(' '.join(log).replace('%', 'pct_').replace('/s', 's'))
+    LOGGER.debug(' '.join(log))
 
 
 def main():
